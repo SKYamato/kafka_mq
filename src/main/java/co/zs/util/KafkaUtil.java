@@ -42,7 +42,7 @@ public class KafkaUtil {
      * @return kafkaProducer
      */
     public static KafkaProducer<String, String> createKafkaProducer() {
-        Properties props = getProducerProperties();
+        Properties props = getProducerBaseProperties();
         return new KafkaProducer<>(props);
     }
 
@@ -52,7 +52,7 @@ public class KafkaUtil {
      * @return
      */
     public static KafkaProducer<String, String> createKafkaProducerWithPartition() {
-        Properties props = getProducerProperties();
+        Properties props = getProducerBaseProperties();
         props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, UserDefinePartitioner.class.getName());
         return new KafkaProducer<>(props);
     }
@@ -62,7 +62,7 @@ public class KafkaUtil {
      *
      * @return
      */
-    public static Properties getProducerProperties() {
+    public static Properties getProducerBaseProperties() {
         //设置链接参数
         Properties props = new Properties();
         //需要在host文件中做ip和主机名的映射
