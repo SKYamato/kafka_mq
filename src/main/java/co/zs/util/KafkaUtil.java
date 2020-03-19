@@ -42,6 +42,11 @@ public class KafkaUtil {
         return new KafkaProducer<>(props);
     }
 
+    /**
+     * 自定义partition
+     *
+     * @return
+     */
     public static KafkaProducer<String, String> createKafkaProducerWithPartition() {
         Properties props = getProducerProperties();
         props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, UserDefinePartitioner.class.getName());
@@ -65,7 +70,7 @@ public class KafkaUtil {
     }
 
     /**
-     * 分组创建KafkaConsumer
+     * 创建带分组的KafkaConsumer
      *
      * @return kafkaConsumer
      */
