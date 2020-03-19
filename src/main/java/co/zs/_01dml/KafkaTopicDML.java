@@ -1,15 +1,15 @@
-package co.zs.dml;
+package co.zs._01dml;
 
+import co.zs.util.KafkaUtil;
 import org.apache.kafka.clients.admin.*;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 /**
- * 测试Kafka DML
+ * 测试Kafka基础DML
  *
  * @author shuai
  * @date 2020/03/18 17:17
@@ -17,35 +17,22 @@ import java.util.concurrent.ExecutionException;
 public class KafkaTopicDML {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         //创建KafkaAdminClient
-        KafkaAdminClient client = getClient();
+        KafkaAdminClient client = KafkaUtil.createClient();
 
         //创建topic
         //createTopic(client);
 
         //删除topic
-        //deleteTopics(client, "topic02");
+        deleteTopics(client, "topic02");
 
         //查看topic详情
-        searchDetail(client);
+        //searchDetail(client);
 
         //查看topic列表
         searchTopic(client);
 
         //关闭客户端
-        client.close();
-    }
-
-    /**
-     * 创建kafka客户端
-     *
-     * @return
-     */
-    private static KafkaAdminClient getClient() {
-        //设置链接参数
-        Properties props = new Properties();
-        //需要在host文件中做ip和主机名的映射
-        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "CentOS:9092");
-        return (KafkaAdminClient) KafkaAdminClient.create(props);
+        KafkaUtil.closeClient(client);
     }
 
     /**
@@ -59,7 +46,6 @@ public class KafkaTopicDML {
         //异步创建Topic信息
         CreateTopicsResult topics = client.createTopics(Arrays.asList(new NewTopic("topic01", 3, (short) 1),
                 new NewTopic("topic02", 3, (short) 1)));
-
         //同步创建Topic信息
         topics.all().get();
     }
@@ -75,11 +61,17 @@ public class KafkaTopicDML {
     private static void deleteTopics(KafkaAdminClient client, String... topicNames) throws ExecutionException, InterruptedException {
         //异步删除
         DeleteTopicsResult deleteTopicsResult = client.deleteTopics(Arrays.asList(topicNames));
-
         //同步删除
         deleteTopicsResult.all().get();
     }
 
+    /**
+     * 查询topic细节信息
+     *
+     * @param client
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     private static void searchDetail(KafkaAdminClient client) throws ExecutionException, InterruptedException {
         DescribeTopicsResult describeTopicsResult = client.describeTopics(Arrays.asList("topic01"));
         Map<String, TopicDescription> stringTopicDescriptionMap = describeTopicsResult.all().get();
