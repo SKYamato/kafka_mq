@@ -22,9 +22,9 @@ public class KafkaConsumerQuickStart {
 
     public static void main(String[] args) {
         //组管理自动订阅：实现消费伸缩性、提高消费者容错力
-        //subscription();
+        subscription();
         //手动指定：消费者相互独立
-        specify();
+        //specify();
     }
 
     /**

@@ -1,16 +1,15 @@
 package co.zs.util;
 
+import co.zs._03patition.UserDefinePartitioner;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.KafkaAdminClient;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -23,7 +22,7 @@ public class KafkaUtil {
     /**
      * 创建kafka客户端
      *
-     * @return KafkaAdminClient
+     * @return kafkaAdminClient
      */
     public static KafkaAdminClient createClient() {
         //设置链接参数
@@ -36,9 +35,25 @@ public class KafkaUtil {
     /**
      * 创建KafkaProducer
      *
-     * @return KafkaProducer
+     * @return kafkaProducer
      */
     public static KafkaProducer<String, String> createKafkaProducer() {
+        Properties props = getProducerProperties();
+        return new KafkaProducer<>(props);
+    }
+
+    public static KafkaProducer<String, String> createKafkaProducerWithPartition() {
+        Properties props = getProducerProperties();
+        props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, UserDefinePartitioner.class.getName());
+        return new KafkaProducer<>(props);
+    }
+
+    /**
+     * 获取kafka生产者配置信息
+     *
+     * @return
+     */
+    private static Properties getProducerProperties() {
         //设置链接参数
         Properties props = new Properties();
         //需要在host文件中做ip和主机名的映射
@@ -46,13 +61,13 @@ public class KafkaUtil {
         //序列化key-value
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        return new KafkaProducer<String, String>(props);
+        return props;
     }
 
     /**
      * 分组创建KafkaConsumer
      *
-     * @return KafkaConsumer
+     * @return kafkaConsumer
      */
     public static KafkaConsumer<String, String> createKafkaConsumerWithGroup(String groupId) {
         Properties props = getConsumerProperties();
@@ -61,7 +76,11 @@ public class KafkaUtil {
         return new KafkaConsumer<>(props);
     }
 
-
+    /**
+     * 创建未分组的kafkaConsumer
+     *
+     * @return kafkaConsumer
+     */
     public static KafkaConsumer<String, String> createKafkaConsumerWithOutGroup() {
         Properties props = getConsumerProperties();
         return new KafkaConsumer<>(props);
