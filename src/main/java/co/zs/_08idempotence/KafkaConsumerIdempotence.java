@@ -8,10 +8,8 @@ import java.util.Arrays;
 import java.util.Properties;
 
 /**
- * 默认consumer初始offset策略
- *
  * @author shuai
- * @date 2020/03/19 15:07
+ * @date 2020/03/20 10:06
  */
 public class KafkaConsumerIdempotence {
     public static void main(String[] args) {

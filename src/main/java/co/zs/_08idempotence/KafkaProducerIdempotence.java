@@ -11,13 +11,12 @@ import java.util.Properties;
  * 生产消息
  *
  * @author shuai
- * @date 2020/03/19 9:15
+ * @date 2020/03/20 10:06
  */
 public class KafkaProducerIdempotence {
 
     public static void main(String[] args) {
         Properties props = KafkaUtil.getProducerBaseProperties();
-
         /**
          * 开启幂等性
          */

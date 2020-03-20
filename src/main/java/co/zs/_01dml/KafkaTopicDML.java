@@ -23,7 +23,7 @@ public class KafkaTopicDML {
         //createTopic(client);
 
         //删除topic
-        //deleteTopics(client, "topic02");
+        //deleteTopics(client, "topic01","topic02");
 
         //查看topic详情
         //searchDetail(client);
